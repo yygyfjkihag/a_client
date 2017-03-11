@@ -34,8 +34,8 @@ int A_client::init() {
 	}
 	return 1;
 }
-int A_client::conn(const char* serverIp, const unsigned short serverPort) {
 
+int A_client::conn(const char* serverIp, const unsigned short serverPort) {
 	SOCKADDR_IN addr_server;
 	addr_server.sin_family = AF_INET;
 	addr_server.sin_port = htons(serverPort);

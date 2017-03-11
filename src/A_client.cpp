@@ -67,6 +67,7 @@ int A_client::sendMsg() {
 
 	if ( SOCKET_ERROR == err) {
 		cout << "Client-send error: " << WSAGetLastError() << endl;
+		return -2;
 	}
 	return 1;
 	}
@@ -77,6 +78,7 @@ int A_client::recvMsg() {
 	err = recv(sock, recv_buf, sizeof(recv_buf), 0);
 	if (err <= 0) {
 		cout << "Client-recv error: " << WSAGetLastError() << endl;
+		return -1;
 	}
 	cout << "Client:";
 	cout << recv_buf << endl;

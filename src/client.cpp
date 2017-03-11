@@ -8,9 +8,10 @@
 #include "A_client.h"
 
 const char* serverIp = "127.0.0.1";
+const unsigned short serverPort = 8700;
 int main(){
 	A_client client;
-	client.conn(serverIp, 8700);
+	client.conn(serverIp, serverPort);
 	while(true) {
 		switch(client.sendMsg()){
 		case -1:

@@ -16,6 +16,7 @@ A_client::A_client(){
 	sock = socket(AF_INET, SOCK_STREAM, 0);
 	if ( INVALID_SOCKET == sock) cout<<"Clint socket creates err."<<endl;
 }
+
 int A_client::init() {
 	WORD wVerReq = MAKEWORD(1, 1);
 	WSADATA wsaData;

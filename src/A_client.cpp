@@ -8,34 +8,29 @@
 #include "A_client.h"
 
 A_client::A_client(){
-	init();
-
-	/**
-	 * test port
-	 */
+	socketBoost();
 	sock = socket(AF_INET, SOCK_STREAM, 0);
-	if ( INVALID_SOCKET == sock) cout<<"Clint socket creates err."<<endl;
 }
 
-int A_client::init() {
+bool A_client::socketBoost() {
 	WORD wVerReq = MAKEWORD(1, 1);
 	WSADATA wsaData;
 	int err = WSAStartup(wVerReq, &wsaData);
 	if (0 != err) {
 		cout << "Client-WSAStartup failed. Return:" << err << endl;
-		return -1;
+		return false;
 	}
 
 	if (wsaData.wVersion != wVerReq) {
 		cout << "Client-wsaData.wVersion: " << wsaData.wVersion
 				<< " is not equal to wVerReq: " << wVerReq << endl;
 		WSACleanup();
-		return -2;
+		return false;
 	}
-	return 1;
+	return true;
 }
 
-int A_client::conn(const char* serverIp, const unsigned short serverPort) {
+bool A_client::conn(const char* serverIp, const unsigned short serverPort) {
 	SOCKADDR_IN addr_server;
 	addr_server.sin_family = AF_INET;
 	addr_server.sin_port = htons(serverPort);
@@ -44,17 +39,17 @@ int A_client::conn(const char* serverIp, const unsigned short serverPort) {
 
 	if ( INVALID_SOCKET == sock) {
 		cout << "Client-socket error: " << WSAGetLastError() << endl;
-		return -3;
+		return false;
 	}
 
 	err = connect(sock, (SOCKADDR*) &addr_server, sizeof(addr_server));
 
 	if ( SOCKET_ERROR == err) {
 		cout << "Client-connect error: " << WSAGetLastError() << endl;
-		return -4;
+		return false;
 	}
 	cout << "Client:Connection established." << endl;
-	return 1;
+	return true;
 }
 
 int A_client::sendMsg() {
@@ -62,13 +57,12 @@ int A_client::sendMsg() {
 	cin.getline(send_buf, 256);
 	cin.clear();
 	if (0 == strcmp(send_buf, "quit") || 0 == strcmp(send_buf, "exit"))
-		return -1;
+		return -2;
 	else {
 	err = send(sock, send_buf, strlen(send_buf) + 1, 0);
-
 	if ( SOCKET_ERROR == err) {
 		cout << "Client-send error: " << WSAGetLastError() << endl;
-		return -2;
+		return -1;
 	}
 	return 1;
 	}
@@ -94,4 +88,4 @@ void A_client::close() {
 	WSACleanup();
 }
 
-A_client::~A_client(){}
+

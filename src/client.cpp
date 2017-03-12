@@ -7,32 +7,32 @@
 #include <iostream>
 #include "A_client.h"
 
-const char* serverIp = "127.0.0.1";
+/*******************************************
+ * 在本例中服务器会获取到客户为本地IP，端口随机
+ * 服务器自身的IP可以指定也可以随机
+ * *****************************************/
+const char* serverIp = "127.0.0.2";
 const unsigned short serverPort = 8700;
 int main(){
+	int sflag=0;
 	A_client client;
 	client.conn(serverIp, serverPort);
 	while(true) {
-		switch(client.sendMsg()){
-		case -1:
+		sflag = client.sendMsg();
+
+		if(1==sflag){
+			client.recvMsg();
 			continue;
-		case -2:
-			break;
-		case 1:
-			break;
-		default :
-			break;
 		}
-		switch(client.recvMsg()){
-		case -1:
-			break;
-		case 1:
-			break;
-		default:
+		if(-1==sflag)
+			continue;
+		if(-2==sflag){
+			client.close();
+			cout<<"CLIEnt OVER."<<endl;
 			break;
 		}
 	}
-	client.close();
+	cout<<"MAIN OVER."<<endl;
 	return 0;
 }
 

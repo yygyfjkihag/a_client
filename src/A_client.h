@@ -21,12 +21,12 @@ private:
 	char send_buf[256];
 public:
 	A_client();
-	int init();
-	int conn(const char* serverIp,const unsigned short serverPort);
+	bool socketBoost();
+	bool conn(const char* serverIp,const unsigned short serverPort);
 	int sendMsg();
 	int recvMsg();
 	void close();
-	~A_client();
+	~A_client(){};
 };
 
 #endif /* A_CLIENT_H_ */
